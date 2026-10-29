@@ -15,11 +15,20 @@
       .crumb { font: .8rem ui-monospace, monospace; }
       .meta { display: flex; flex-wrap: wrap; gap: .5rem 1rem; font-size: .85rem; }
       .status { border: 1px solid var(--line); border-radius: 99px; padding: 0 .6rem; }
-      .callout { border-left: 4px solid var(--accent); padding: .65rem 1rem; background: color-mix(in srgb, var(--accent) 10%, transparent); }
+      .callout { border-left: 4px solid var(--accent); padding: .5rem 1rem; margin: 1rem 0; background: color-mix(in srgb, var(--accent) 10%, transparent); }
       table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .92rem; }
       th, td { border-bottom: 1px solid var(--line); padding: .4rem .5rem; text-align: left; }
       td:last-child { color: var(--warn); font-weight: 600; }
       code { font: .88em ui-monospace, monospace; }
+      figure { margin: 1rem 0; }
+      svg { width: 100%; max-width: 640px; }
+      .in { fill: var(--warn); }
+      .merged { fill: var(--accent); }
+      svg text { font: 8px ui-monospace, monospace; fill: var(--muted); text-anchor: middle; }
+      figcaption { color: var(--muted); font-size: .85rem; }
+      .key { display: inline-block; width: .7em; height: .7em; border-radius: 2px; }
+      .key.in { background: var(--warn); }
+      .key.merged { background: var(--accent); }
       footer { margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1rem; font-size: .8rem; }
       @media (max-width: 600px) { table { font-size: .78rem; } th, td { padding: .35rem .25rem; } }
     </style>
@@ -37,13 +46,23 @@
       <h2>What was merged</h2>
       <p><strong>412</strong> reports merged into #4471 · <strong>2</strong> causes</p>
       <table>
-        <thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th>outcome</th></tr></thead>
+        <thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th>action</th></tr></thead>
         <tbody>
           <tr><td><code>parser</code></td><td>379</td><td>parser ×356 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td>fixed</td></tr>
           <tr><td><code>hint</code></td><td>33</td><td>parser ×15 · hint ×18</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td>won't fix · booking-v3 retired</td></tr>
         </tbody>
       </table>
       <p>The cause comes from the tenant's locale, form version, and report channel, not the intake tag. Intake tagged 371 reports <code>parser</code> and 41 <code>hint</code>; those guesses do not define the cause. The five reports noted as one-day moves remain in the parser group because their tenants use day-first dates and they did not come through booking-v3. The 379 parser reports map to the shipped fix; the 33 hint reports map to the retired form and a won't-fix outcome.</p>
+
+      <h2>Since April</h2>
+      <figure>
+        <svg viewBox="0 0 648 140" role="img" aria-label="412 reports received and 412 reports merged into #4471, per week">
+          <path class="in" d="M2 106.30v3.70h9v-3.70zM26 104.18v5.82h9v-5.82zM50 102.59v7.41h9v-7.41zM74 99.95v10.05h9v-10.05zM98 101.53v8.47h9v-8.47zM122 103.65v6.35h9v-6.35zM146 105.77v4.23h9v-4.23zM170 103.65v6.35h9v-6.35zM194 102.59v7.41h9v-7.41zM218 101.01v8.99h9v-8.99zM242 101.53v8.47h9v-8.47zM266 101.01v8.99h9v-8.99zM290 104.18v5.82h9v-5.82zM314 102.06v7.94h9v-7.94zM338 99.95v10.05h9v-10.05zM362 101.01v8.99h9v-8.99zM386 102.06v7.94h9v-7.94zM410 99.95v10.05h9v-10.05zM434 105.77v4.23h9v-4.23zM458 102.06v7.94h9v-7.94zM482 99.42v10.58h9v-10.58zM506 102.59v7.41h9v-7.41zM530 98.89v11.11h9v-11.11zM554 99.42v10.58h9v-10.58zM578 102.06v7.94h9v-7.94zM602 96.77v13.23h9v-13.23zM626 102.06v7.94h9v-7.94z" />
+          <path class="merged" d="M324 10.00v100.00h9v-100.00zM348 100.48v9.52h9v-9.52zM372 100.48v9.52h9v-9.52zM396 102.06v7.94h9v-7.94zM420 99.95v10.05h9v-10.05zM444 105.77v4.23h9v-4.23zM468 102.06v7.94h9v-7.94zM492 99.42v10.58h9v-10.58zM516 102.59v7.41h9v-7.41zM540 98.89v11.11h9v-11.11zM564 99.42v10.58h9v-10.58zM588 102.06v7.94h9v-7.94zM612 97.83v12.17h9v-12.17zM636 101.01v8.99h9v-8.99z" />
+          <text x="12" y="128">03-30</text><text x="108" y="128">04-27</text><text x="204" y="128">05-25</text><text x="300" y="128">06-22</text><text x="396" y="128">07-20</text><text x="492" y="128">08-17</text><text x="588" y="128">09-14</text>
+        </svg>
+        <figcaption><span class="key in"></span> received · <span class="key merged"></span> merged into #4471 · per week</figcaption>
+      </figure>
 
       <h2>Lessons</h2>
       <ul>
