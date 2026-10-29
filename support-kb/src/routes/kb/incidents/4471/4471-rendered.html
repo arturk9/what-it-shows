@@ -31,19 +31,19 @@
       <p class="meta"><span>owner <b>support desk</b></span><span class="status">known</span><span>reviewed 2026-10-29</span></p>
 
       <p>Since April, the desk has merged 412 unique reports about dates into #4471. The export contains 427 rows because some reports appear more than once; count each report ID once.</p>
-      <p>The reports describe two problems, not one. The shared parser reads month first for day-first tenants. Separately, booking-v3 tells people to enter month first even when their tenant's date format is day first. Both problems can move a booking to the wrong date, but they need different fixes and separate engineering tickets.</p>
-      <p class="callout">Known. Split the 379 parser reports and 33 booking-form hint reports into separate tickets.</p>
+      <p>The reports describe two problems, not one. The shared parser read month first for day-first tenants. Separately, booking-v3 told people to enter month first even when their tenant's date format was day first. The parser is fixed. The hint issue will not be fixed because booking-v3 has been retired.</p>
+      <p class="callout">Desk update: #4471 closed 5 October. Parser fix shipped; booking-v3 hint issue won't be fixed.</p>
 
       <h2>What was merged</h2>
       <p><strong>412</strong> reports merged into #4471 · <strong>2</strong> causes</p>
       <table>
-        <thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th>action</th></tr></thead>
+        <thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th>outcome</th></tr></thead>
         <tbody>
-          <tr><td><code>parser</code></td><td>379</td><td>parser ×356 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td>file a separate issue</td></tr>
-          <tr><td><code>hint</code></td><td>33</td><td>parser ×15 · hint ×18</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td>file a separate issue</td></tr>
+          <tr><td><code>parser</code></td><td>379</td><td>parser ×356 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td>fixed</td></tr>
+          <tr><td><code>hint</code></td><td>33</td><td>parser ×15 · hint ×18</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td>won't fix · booking-v3 retired</td></tr>
         </tbody>
       </table>
-      <p>The cause comes from the tenant's locale, form version, and report channel, not the intake tag. Intake tagged 371 reports <code>parser</code> and 41 <code>hint</code>; those guesses do not define the cause. The five reports noted as one-day moves remain in the parser group because their tenants use day-first dates and they did not come through booking-v3.</p>
+      <p>The cause comes from the tenant's locale, form version, and report channel, not the intake tag. Intake tagged 371 reports <code>parser</code> and 41 <code>hint</code>; those guesses do not define the cause. The five reports noted as one-day moves remain in the parser group because their tenants use day-first dates and they did not come through booking-v3. The 379 parser reports map to the shipped fix; the 33 hint reports map to the retired form and a won't-fix outcome.</p>
 
       <h2>Lessons</h2>
       <ul>

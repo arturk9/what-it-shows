@@ -33,7 +33,7 @@
         <td class="tags">{tags(g)}</td>
         <td>{g.tenants}</td>
         <td>{g.firstSeen} → {g.lastSeen}</td>
-        <td>file a separate issue</td>
+        <td>{g.cause === 'parser' ? 'fixed' : 'won’t fix · booking-v3 retired'}</td>
       </tr>
     {/each}
   </tbody>

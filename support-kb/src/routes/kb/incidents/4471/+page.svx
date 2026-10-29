@@ -17,13 +17,13 @@ signature: arturk9
 Since April, the desk has merged 412 unique reports about dates into #4471. The export contains
 427 rows because some reports appear more than once; count each report ID once.
 
-The reports describe two problems, not one. The shared parser reads month first for day-first
-tenants. Separately, booking-v3 tells people to enter month first even when their tenant's date
-format is day first. Both problems can move a booking to the wrong date, but they need different
-fixes and separate engineering tickets.
+The reports describe two problems, not one. The shared parser read month first for day-first
+tenants. Separately, booking-v3 told people to enter month first even when their tenant's date
+format was day first. The parser is fixed. The hint issue will not be fixed because booking-v3
+has been retired.
 
 <Callout>
-Known. Split the 379 parser reports and 33 booking-form hint reports into separate tickets.
+Desk update: #4471 closed 5 October. Parser fix shipped; booking-v3 hint issue won't be fixed.
 </Callout>
 
 ## What was merged
@@ -33,7 +33,8 @@ Known. Split the 379 parser reports and 33 booking-form hint reports into separa
 The cause comes from the tenant's locale, form version, and report channel, not the intake tag.
 Intake tagged 371 reports `parser` and 41 `hint`; those guesses do not define the cause. The five
 reports noted as one-day moves remain in the parser group because their tenants use day-first
-dates and they did not come through booking-v3.
+dates and they did not come through booking-v3. The 379 parser reports map to the shipped fix;
+the 33 hint reports map to the retired form and a won't-fix outcome.
 
 ## Since April
 
