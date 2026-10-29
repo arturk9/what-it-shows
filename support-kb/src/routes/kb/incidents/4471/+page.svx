@@ -1,0 +1,48 @@
+---
+layout: runbook
+title: '#4471 · two date problems'
+owner: support desk
+status: known
+reviewed: 2026-10-29
+signature: arturk9
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+Since April, the desk has merged 412 unique reports about dates into #4471. The export contains
+427 rows because some reports appear more than once; count each report ID once.
+
+The reports describe two problems, not one. The shared parser reads month first for day-first
+tenants. Separately, booking-v3 tells people to enter month first even when their tenant's date
+format is day first. Both problems can move a booking to the wrong date, but they need different
+fixes and separate engineering tickets.
+
+<Callout>
+Known. Split the 379 parser reports and 33 booking-form hint reports into separate tickets.
+</Callout>
+
+## What was merged
+
+<CauseTable ticket={4471} />
+
+The cause comes from the tenant's locale, form version, and report channel, not the intake tag.
+Intake tagged 371 reports `parser` and 41 `hint`; those guesses do not define the cause. The five
+reports noted as one-day moves remain in the parser group because their tenants use day-first
+dates and they did not come through booking-v3.
+
+## Since April
+
+<QueueTimeline ticket={4471} />
+
+## Lessons
+
+- A large ticket can hide multiple causes. Group by product behavior, not by symptom or intake tag.
+- Deduplicate by report ID before counting: overlapping export pages are not extra reports.
+- Keep the one-day-move notes visible without treating those reports as a third cause.
+
+<RenderStamp {signature} />
