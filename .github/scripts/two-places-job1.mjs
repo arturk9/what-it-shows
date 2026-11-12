@@ -128,19 +128,14 @@ function toPlainObject(value) {
 }
 
 function findTramRecord(value) {
-  let candidates = [];
+  const candidates = [];
   walk(value, (node) => {
     if (Array.isArray(node)) return;
-    const serialized = JSON.stringify(node);
-    if (/tram[- ]?3/i.test(serialized)) candidates.push(node);
+    const directMatch = Object.values(node).some((item) => typeof item === 'string' && /tram[- ]?3/i.test(item));
+    const hasRecordId = Object.keys(node).some((key) => /(^id$|record|entry|incident)/i.test(key));
+    if (directMatch && hasRecordId) candidates.push(node);
   });
-  candidates = candidates.filter((node) => Object.keys(node).length > 1);
-  candidates.sort((a, b) => {
-    const hasLineA = Object.entries(a).some(([key, value]) => /line|tram|vehicle/i.test(key) && typeof value === 'string' && /tram[- ]?3/i.test(value));
-    const hasLineB = Object.entries(b).some(([key, value]) => /line|tram|vehicle/i.test(key) && typeof value === 'string' && /tram[- ]?3/i.test(value));
-    if (hasLineA !== hasLineB) return hasLineA ? -1 : 1;
-    return Object.keys(a).length - Object.keys(b).length;
-  });
+  candidates.sort((a, b) => Object.keys(a).length - Object.keys(b).length);
   return candidates[0];
 }
 
@@ -207,7 +202,7 @@ async function run() {
   const readTool = tools.find((tool) => tool.name === 'read');
   const readProps = readTool?.inputSchema?.properties ?? {};
   const idKey = firstProperty(readProps, /(^id$|record|entry|incident)/i, 'id');
-  const recordId = findValueByPattern(match, /(^id$|record|entry|incident)/i);
+  const recordId = Object.entries(match ?? {}).find(([key, value]) => /(^id$|record|entry|incident)/i.test(key) && (typeof value === 'string' || typeof value === 'number'))?.[1];
   if (recordId === undefined) throw new Error('Could not identify the tram-3 record ID');
   const fieldsKey = firstProperty(readProps, /^fields$/i, 'fields');
   const read = await callTool('read', { [idKey]: recordId, [fieldsKey]: ['date', 'time', 'clock', 'line', 'cause'] });
