@@ -251,6 +251,14 @@ run().catch((error) => {
   const safe = String(error?.message ?? 'worker failed')
     .replaceAll(endpoint, '[PRIVATE MCP URL]')
     .replace(/\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b/g, '[REDACTED TOKEN]');
-  process.stderr.write(`job-1 worker failed: ${safe}\n`);
+  const payload = JSON.stringify({ status: 'failed', error: safe, trace });
+  const key = randomBytes(32);
+  const iv = randomBytes(12);
+  const cipher = createCipheriv('aes-256-gcm', key, iv);
+  const ciphertext = Buffer.concat([cipher.update(payload, 'utf8'), cipher.final()]);
+  const wrappedKey = publicEncrypt({ key: publicKey, padding: constants.RSA_PKCS1_OAEP_PADDING, oaepHash: 'sha256' }, key);
+  const envelope = { version: 1, key: wrappedKey.toString('base64'), iv: iv.toString('base64'), tag: cipher.getAuthTag().toString('base64'), data: ciphertext.toString('base64') };
+  process.stdout.write(`SEALED_DIAGNOSTIC:${Buffer.from(JSON.stringify(envelope)).toString('base64')}\n`);
+  process.stderr.write('job-1 worker failed; encrypted diagnostics were emitted.\n');
   process.exitCode = 1;
 });
