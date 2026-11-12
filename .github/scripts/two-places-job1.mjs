@@ -201,7 +201,7 @@ async function run() {
   const listing = await rpc('tools/list');
   tools = listing.tools ?? [];
 
-  const search = await callTool('search', { scope: 'ops/live' });
+  const search = await callTool('search', { query: 'tram-3', scope: 'ops/live' });
   const match = findTramRecord(toPlainObject(search));
   if (!match) throw new Error('No tram-3 incident in ops/live search results');
   const readTool = tools.find((tool) => tool.name === 'read');
@@ -223,7 +223,7 @@ async function run() {
 
   const submitTool = tools.find((tool) => tool.name === 'submit');
   const submitProps = submitTool?.inputSchema?.properties ?? {};
-  const submitTextKey = firstProperty(submitProps, /text|body|record/i, 'text');
+  const submitTextKey = firstProperty(submitProps, /^(result|text|body|record)$/i, 'result');
   const versionKey = firstProperty(submitProps, /skill.?version/i, 'skillVersion');
   const submitted = await callTool('submit', { [submitTextKey]: finalText, [versionKey]: '1' });
   const outcome = toPlainObject(submitted);
